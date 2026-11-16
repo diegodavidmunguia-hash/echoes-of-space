@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An interactive atlas of the machines that explored space and the stories they left behind.">
+<title>Echoes of Space — Mission Story Atlas</title>
+<link rel="icon" href="/mark.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<script src="/app.js" type="module"></script>
+</head>
+<body><div class="demo-banner" id="demoBanner" hidden data-t="localDemo"></div>
+<a class="skip" href="#explore" data-t="skip">Skip to the sky map</a>
+<header class="top">
+  <a class="brand" href="#" aria-label="Echoes of Space">
+    <img src="/mark.svg" alt="" width="37" height="37"><span>Echoes<span class="brand-light"> of Space</span></span>
+  </a>
+  <nav aria-label="Main">
+    <a href="#explore" class="nav-atlas" data-t="atlas">Sky Atlas</a><a href="#archive" data-t="archive">Story Archive</a>
+  </nav>
+  <div class="actions">
+    <button class="lang" id="language" type="button" aria-label="Cambiar a español"><span class="current">EN</span><span class="slash">/</span><span>ES</span></button>
+    <button class="primary compact" data-write><span aria-hidden="true">＋</span><span data-t="submit">Submit a story</span></button>
+  </div>
+</header>
+<main>
+<section class="observatory" id="explore" aria-labelledby="hero-title">
+  <div class="star-layer" aria-hidden="true"><canvas id="stars"></canvas></div>
+  <div class="intro">
+    <a href="https://www.spaceappschallenge.org/2026/challenges/nasas-discarded-equipment-storytelling/" target="_blank" rel="noopener" class="eyebrow"><span class="dot"></span><span data-t="challenge">NASA SPACE APPS CHALLENGE</span></a>
+    <h1 id="hero-title"><span data-t="hero1">Look up.</span><br><em data-t="hero2">Find a story.</em></h1>
+    <p data-t="intro">Behind every spacecraft, rover and satellite is a story waiting to be told. Pick a world and follow the hardware that went there.</p>
+  </div>
+  <div class="chart" id="chart" aria-label="Interactive sky map">
+    <div class="chart-field" id="chartField">
+      <div class="orbit-grid" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="sweep" aria-hidden="true"></div>
+      <div id="destinations"></div>
+    </div>
+    <div class="sky-key"><span class="crosshair" aria-hidden="true">⊕</span> <span data-t="mapHint">Move to look around · Select a destination</span></div>
+  </div>
+  <aside class="mission" id="mission" aria-live="polite"></aside>
+  <div class="dest-bar" id="destBar" aria-label="Destinations"></div>
+</section>
+<section class="journey-strip" aria-label="Exploration progress"><div><span class="eyebrow" data-t="passport">YOUR EXPLORER PASSPORT</span><p id="journeyProgress" role="status"></p></div><div class="passport-stamps" id="passportStamps"></div><button class="secondary" id="nextUnread" data-t="nextUnread">Discover an unread story</button></section>
+<section class="archive" id="archive" aria-labelledby="archive-title">
+  <div class="archive-head">
+    <div><h2 id="archive-title" data-t="archive">Story Archive</h2><p data-t="archiveIntro">Travel through real missions and original fiction.</p></div>
+    <div class="filters" id="filters"></div>
+  </div>
+  <div class="archive-tools"><label class="search-label"><span data-t="searchLabel">Search the archive</span><input type="search" id="storySearch" autocomplete="off"></label><label><span data-t="dest">Destination</span><select id="archiveDestination"></select></label><label><span data-t="equipment">Hardware type</span><select id="archiveType"></select></label><button class="secondary" id="savedOnly" aria-pressed="false" data-t="savedOnly">Saved stories</button></div><p class="result-count" id="resultCount" role="status"></p>
+  <div id="storyList" class="story-list"></div>
+  <p id="archiveStatus" class="muted" role="status"></p>
+</section>
+<section class="write-invitation"><div><span class="eyebrow" data-t="invitationEyebrow">THE NEXT SIGNAL COULD BE YOURS</span><h2 data-t="invitationTitle">Give a silent machine a voice.</h2><p data-t="invitationText">Follow a real mission or invent your own. Every story has a place in this sky.</p></div><button class="primary" data-write data-t="submit">Submit a story</button></section></main>
+<footer><a class="brand" href="#"><img src="/mark.svg" alt="" width="30" height="30"><span>Echoes of Space</span></a><a href="https://www.spaceappschallenge.org/2026/challenges/nasas-discarded-equipment-storytelling/" target="_blank" rel="noopener" data-t="challengeFooter">Space Apps challenge ↗</a><span class="independent-note" data-t="independent">Independent student project · Not a NASA website</span></footer>
+<dialog id="reader" aria-labelledby="readTitle"><article id="readContent"></article></dialog>
+<dialog id="writer" aria-labelledby="writeTitle">
+  <div class="write-body">
+    <button class="close" data-close="writer" aria-label="Close">×</button>
+    <h2 id="writeTitle" data-t="submit">Submit a story</h2>
+    <p class="muted" data-t="writeIntro">Choose where your story lives and the hardware at its center.</p>
+    <div class="writer-steps" role="group" aria-label="Story editor"><button type="button" data-step="0"></button><button type="button" data-step="1"></button><button type="button" data-step="2"></button></div><p class="muted" id="draftState" role="status"></p><form id="storyForm"><fieldset data-panel="0"><legend data-t="stepPlace">01 · Place your story</legend>
+      <div class="form-grid">
+        <label><span data-t="title">Title</span><input name="title" required maxlength="100" autocomplete="off"></label>
+        <label><span data-t="object">Hardware name</span><input name="hardware" required maxlength="80" autocomplete="off" placeholder="Pioneer 10"></label>
+        <label><span data-t="dest">Destination</span><select name="destination" id="formDest" required></select></label>
+        <label><span data-t="equipment">Hardware type</span><select name="type" id="formType" required></select></label>
+        <label><span data-t="category">Story category</span><select name="category" id="formCategory" required></select></label>
+        <label><span data-t="storyLanguage">Story language</span><select name="language" id="formLanguage" required></select></label>
+      </div>
+</fieldset><fieldset data-panel="1" hidden><legend data-t="stepWrite">02 · Write & cite</legend><p class="writing-prompt" id="writingPrompt"></p><label><span data-t="story">Your story</span><textarea name="body" required rows="6" maxlength="12000"></textarea></label>
+      <div id="sourceBlock" hidden>
+        <div class="source-label"><strong data-t="sources">Mission sources</strong><button class="text-button" id="addSource" type="button" data-t="addSource">+ Add link</button></div>
+        <p class="muted source-help" data-t="sourceHelp">Add at least one official nasa.gov link that supports the hardware or science in your story.</p>
+        <div id="sourceRows"></div>
+      </div>
+      <p id="fictionHelp" class="muted" hidden data-t="fictionHelp">Original fiction is shown with its own label. This category accepts stories without NASA source links.</p>
+<div class="editor-meta"><span id="wordCount"></span><span id="charCount"></span></div></fieldset><fieldset data-panel="2" hidden><legend data-t="stepReview">03 · Review your story</legend><article id="storyPreview"></article><p class="muted privacy" data-t="privacy">Your title, story and source links will appear in the archive. Leave out personal details.</p>
+</fieldset><div class="editor-actions"><button type="button" class="secondary" id="previousStep" data-t="back">Back</button><button type="button" class="primary" id="nextStep" data-t="continue">Continue</button><button type="button" class="text-button" id="exportDraft" data-t="exportDraft">Download draft</button></div><p id="formStatus" role="status" aria-live="polite"></p>
+      <button type="submit" class="primary" id="sendStory" hidden><span data-t="publish">Publish story</span><span aria-hidden="true">↗</span></button>
+    </form>
+  </div>
+</dialog>
+</body>
+</html>
