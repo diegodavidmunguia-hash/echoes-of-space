@@ -1,0 +1,9 @@
+/dist/
+/.local/
+/.wrangler/
+/.dev.vars
+/node_modules/
+/respaldos/
+/deliverables/
+.DS_Store
+Thumbs.db

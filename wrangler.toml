@@ -1,0 +1,19 @@
+# Echoes of Space · Cloudflare Workers
+# Antes de desplegar: `node build.mjs` (genera dist/server/).
+name = "echoes-of-space"
+main = "cloudflare/entry.js"
+compatibility_date = "2025-09-01"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "echoes-of-space"
+database_id = "PEGA_AQUI_EL_ID_DE_D1"
+migrations_dir = "drizzle"
+
+[[kv_namespaces]]
+binding = "FILES"
+id = "PEGA_AQUI_EL_ID_DE_KV"
+
+[vars]
+ATLAS_MODERATOR_EMAIL = "PEGA_AQUI_TU_CORREO"
